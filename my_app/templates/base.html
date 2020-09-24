@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+
+
+<head>
+    {% block headcss %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style2.css') }}" type="text/css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+          integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    {% endblock %}
+</head>
+
+
+<body>
+
+<div class="container">
+    <div class="grid-container">
+
+        <div class="header">
+            <h1>uefa_comps</h1>
+        </div>
+        {% block navmenu %}
+        <nav class="nav-menu">
+            <ul class="nav-list">
+                <li class="nav-item"><a href="{{ url_for('uefa_comps.pocetna') }}">home - <i class="fa fa-home"></i></a></li>
+                <li class="nav-item"><a href="">account - <i class="fa fa-user"></i></a></li>
+                <li class="nav-item"><a href="">logout - <i class="fa fa-sign-out-alt"></i></a></li>
+            </ul>
+        </nav>
+        {% endblock %}
+
+        {% block content %}
+
+        {% endblock %}
+
+
+    </div>
+
+</div>
+
+
+</body>
+
+</html>

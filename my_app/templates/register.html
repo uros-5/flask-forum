@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block headcss %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+
+<div class="log-message">
+    <h3>Register page.</h3>
+</div>
+
+<div class="form">
+    <p>email</p>
+    <input type="text" maxlength="25" size="10"/>
+</div>
+
+<div class="form">
+    <p>username</p>
+    <input type="text" maxlength="10" size="10"/>
+</div>
+
+<div class="form">
+    <p>password</p>
+    <input type="password" maxlength="10" size="10"/>
+</div>
+
+<div class="form">
+    <p>password</p>
+    <input type="password" maxlength="10" size="10"/>
+</div>
+
+<div class="button-form">
+    <a href="register.html">Register</a>
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+
+.main-content {
+    grid-column: 1 / 3;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin-top: 1em;
+    padding: 0.5em;
+}
+
+.main-content > * {
+    margin-top: 1em;
+}
+
+.main-category {
+    flex: 1 90%;
+    text-align:left;
+    padding: 0.5em;
+    border-bottom: 2px solid black;
+}
+
+.main-category a {
+    margin-left: 1em;
+    text-decoration: none;
+    color:white;
+    background-color:rgba(178, 183, 184, 0.50);
+    padding:0 0.9em;
+    border-radius: 0.2em;
+    font-size: 1.3em
+}
+
+.main-category-photo {
+    flex: 1 10%;
+    border-right: 5px solid black;
+}
+
+.main-category-last-message {
+    flex: 1 auto;
+    border-bottom: 2px solid black;
+}
+
