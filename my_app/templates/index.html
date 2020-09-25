@@ -2,7 +2,7 @@
 
 {% block headcss %}
 {{ super() }}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}" type="text/css"/>
+{{ render_link_rel('index') }}
 {% endblock %}
 
 
@@ -11,7 +11,7 @@
 
     {% for podforum in forum %}
     <div class="main-category">
-        <a href="{{ url_for('uefa_comps.forum', podforum=podforum) }}">{{ forum[podforum][0] }}</a>
+        <a href="{{ url_for('uefa_comps.forum', podforum=podforum.0|set_url) }}">{{ podforum.0 }}</a>
         <p>last message:10min</p>
     </div>
     <div class="main-category-photo">

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% from '__helpers.html' import render_input %}
 {% block headcss %}
 {{ super() }}
 {% endblock %}
@@ -11,11 +11,11 @@
 
         <div class="form">
             <p>username</p>
-            <input type="text" maxlength="10" size="10"/>
+            {{ render_input('text') }}
         </div>
         <div class="form">
             <p>password</p>
-            <input type="password" maxlength="10" size="10"/>
+            {{ render_input('password') }}
         </div>
         <div class="button-form">
             <a href="login.html">Login</a>

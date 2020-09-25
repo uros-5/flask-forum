@@ -1,0 +1,8 @@
+{% macro render_input(type='text', maxlength='10' , size='10' ,name='', class='', value='' ) %}
+<input type="{{ type }}" name="{{ name }}" class="{{ class }}"
+       value="{{ value }}" maxlength="{{ max_length}}" size="{{ size }}"/>
+{%- endmacro %}
+
+{% macro render_link_rel (naziv='') %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/%s.css' % naziv) }}" type="text/css"/>
+{%- endmacro %}
