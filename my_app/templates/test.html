@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+{% if not komentari.has_prev %}
+    <p>Slika</p>
+{% endif %}
+
+{% for komentar in komentari.items %}
+<div style="border:2px solid black;">
+    <p>{{ komentar["komentar"] }}</p>
+</div>
+{% endfor %}
+
+
+
+</body>
+</html>

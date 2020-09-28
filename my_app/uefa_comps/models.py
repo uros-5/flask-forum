@@ -8,6 +8,12 @@ class Users(db.Model):
 	datum_registracije = db.Column(db.Date(),nullable=False,default=datetime.datetime.utcnow)
 	uploader = db.Column(db.Boolean(),default=False)
 
+	def __init__(self,username,email,password,uploader = False):
+		self.username = username
+		self.email = email
+		self.password = password
+		self.uploader = uploader
+
 	def __repr__(self):
 		return self.id
 
@@ -26,7 +32,7 @@ class Videos(db.Model):
 
 class KomentariNaVideu(db.Model):
 	id = db.Column(db.Integer,primary_key=True,autoincrement=True)
-	kategorija = db.Column(db.Text(400),nullable=False)
+	komentar = db.Column(db.Text(400),nullable=False)
 	napisano = db.Column(db.Date(),nullable=False,default=datetime.datetime.utcnow)
 	video = db.Column(db.Integer(),db.ForeignKey("videos.id"))
 	napisao = db.Column(db.Integer(),db.ForeignKey("users.id"))

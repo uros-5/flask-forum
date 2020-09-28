@@ -1,51 +1,46 @@
-<!doctype html>
-<html>
+{% extends 'base.html' %}
+{% from '__helpers.html' import href_forum with context %}
+{% block headcss %}
+{{ super() }} {{ render_link_rel('video') }}
+{% endblock %}
 
-<head>
-
-    <link rel="stylesheet" href="../static/css/style2.css" type="text/css"/>
-    <link rel="stylesheet" href="../static/css/video.css" type="text/css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
-          integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-</head>
-
-<body>
-
-<div class="container">
-    <div class="grid-container">
-        <div class="header">
-            <h1>uefa_comps</h1>
-        </div>
-        <nav class="nav-menu">
-            <ul class="nav-list">
-                <li class="nav-item"><a href="">home - <i class="fa fa-home"></i></a></li>
-                <li class="nav-item"><a href="">account - <i class="fa fa-user"></i></a></li>
-                <li class="nav-item"><a href="">logout - <i class="fa fa-sign-out-alt"></i></a></li>
-            </ul>
-        </nav>
+{% block content %}
 
         <div class="topic-name">
-            <h2>James Rodriguez vs Arsenal 2020</h2>
-        </div>
+            <h2>
+                {% if komentari.has_prev %}
+                {{ href_forum(request.endpoint,video=video,page=komentari.prev_num,text="<") }}
+                {% else %}
+                <a href="{{ url_for('uefa_comps.pocetna') }}"> < </a>
+                {% endif %}
 
+                {{ video.naslov }}
+
+                {% if komentari.has_next %}
+                {{ href_forum(request.endpoint,video=video,page=komentari.next_num,text=">") }}
+                {% else %}
+                 <a href="{{ url_for('uefa_comps.pocetna') }}"> > </a>
+                {% endif %}
+            </h2>
+        </div>
+        {% if not komentari.has_prev %}
         <div class="topic-main-post">
             <div class="topic-main-op">
-                <a href="//">poster</a>
+                <a href="//">{{ video.objavio }}</a>
             </div>
 
 
             <div class="topic-main-date">
-                <p href="//">#br datum</p>
+                <p href="//">#0 {{ video.objavljeno }}</p>
             </div>
 
 
             <div class="topic-main-image">
-                <img src="../static/images/test.png" height="fill">
+                <img src="{{ url_for('static',filename='images/test.png') }}" height="fill">
             </div>
 
             <div class="topic-main-url">
-                <a href="">DOWNLOAD</a>
+                <a href="{{ video.dl_link }}">DOWNLOAD</a>
             </div>
 
             <div class="topic-main-like">
@@ -53,36 +48,26 @@
             </div>
 
         </div>
+    {% endif %}
 
+    {% for komentar in komentari.items %}
         <div class="topic-comment-post">
             <div class="topic-commentator">
-                <a href="//">username:</a>
+                <a href="//">{{ komentar.napisao }}</a>
             </div>
 
             <div class="topic-comment-date">
-                <p>#br datum</p>
+                <p>#{{ komentar.id }} {{ komentar.napisano }}</p>
             </div>
 
             <div class="topic-comment">
                 <p>
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
-                    and scrambled it to make a type specimen book. It has survived not only five centuries, but also the
-                    leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s
-                    with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop
-                    publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                    {{ komentar.komentar }}
                 </p>
             </div>
 
 
         </div>
+    {% endfor %}
 
-
-    </div>
-
-</div>
-
-
-</body>
-
-</html>
+{% endblock %}

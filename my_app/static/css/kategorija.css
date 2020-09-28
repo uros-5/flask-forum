@@ -1,5 +1,10 @@
 .category-name {
-    grid-column: 1 / 3;
+    grid-column: 1 / 2;
+}
+
+.pagination_page {
+    grid-column: 2 / 3;
+
 }
 
 .category-name h2 {
@@ -8,6 +13,8 @@
     text-underline-position: right;
     text-decoration: underline;
 }
+
+
 
 .category-videos {
     grid-column: 1 / 3;

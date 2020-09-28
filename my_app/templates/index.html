@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% from '__helpers.html' import href_home with context %}
 
 {% block headcss %}
 {{ super() }}
@@ -11,12 +12,13 @@
 
     {% for podforum in forum %}
     <div class="main-category">
-        <a href="{{ url_for('uefa_comps.forum', podforum=podforum.0|set_url) }}">{{ podforum.0 }}</a>
+        {{ href_home(podforum.0) }}
         <p>last message:10min</p>
     </div>
     <div class="main-category-photo">
         <img src=""/>
     </div>
+
     {% endfor %}
 </div>
 {% endblock %}

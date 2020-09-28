@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% from '__helpers.html' import href_forum with context %}
 
 {% block headcss %}
 {{ super() }} {{ render_link_rel('kategorija') }}
@@ -7,23 +8,46 @@
 {% block content %}
 
 <div class="category-name">
-    <h2>{{ videos.0.podforum }}</h2>
+    <h2>{{ podforum }}</h2>
 </div>
 
-{% for i in videos %}
+<div class="pagination_page">
+    <span>
+
+
+    {% if videos.has_prev %}
+        {{ href_forum(request.endpoint,podforum,videos.prev_num,"<") }}
+    {% else %}
+        <a href="{{ url_for('uefa_comps.pocetna') }}"> < </a>
+    {% endif %}
+    <p>{{ page }}</p>
+    {% if videos.has_next %}
+        {{ href_forum(request.endpoint,podforum,videos.next_num,">") }}
+    {% else %}
+        <p> > </p>
+    {% endif %}
+
+
+
+    </span>
+</div>
+
+{% for i in videos.items %}
     <div class="category-videos">
 
         <div class="video-name">
-            <h3>{{ i.naslov }}</h3>
+            <h3>{{ i["naslov"] }}</h3>
         </div>
 
         <div class="video-image">
-            <img src="../static/images/test.png" width="100%" height="100%">
+            <img src="{{ url_for('static',filename='images/test.png') }}" width="100%" height="100%">
         </div>
 
         <div class="video-post">
-            <a href="{{ url_for('uefa_comps.video', podforum = podforum , id = i.id )}}"><i class="fa fa-eye"></i></a>
+            <a href="{{ url_for('uefa_comps.video', podforum = set_url(podforum) , video= set_url(i.naslov,i.id) , page = 1 )}}"><i class="fa fa-eye"></i></a>
         </div>
+
+
 
     </div>
 {% endfor %}
