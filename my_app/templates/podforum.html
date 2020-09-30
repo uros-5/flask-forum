@@ -44,7 +44,7 @@
         </div>
 
         <div class="video-post">
-            <a href="{{ url_for('uefa_comps.video', podforum = set_url(podforum) , video= set_url(i.naslov,i.id) , page = 1 )}}"><i class="fa fa-eye"></i></a>
+            <a href="{{ url_for('uefa_comps.video', video= i['url_view'] , page = 1 )}}"><i class="fa fa-eye"></i></a>
         </div>
 
 

@@ -7,17 +7,32 @@
         {% block content %}
         <div class="log-message">
             <h3>Login page.</h3>
+            {% for message in get_flashed_messages (with_categories=false) %}
+            {{ message }}
+            {% endfor %}
         </div>
 
-        <div class="form">
-            <p>username</p>
-            {{ render_input('text') }}
-        </div>
-        <div class="form">
-            <p>password</p>
-            {{ render_input('password') }}
-        </div>
-        <div class="button-form">
-            <a href="login.html">Login</a>
-        </div>
+        <form method="POST" action="{{ url_for('uefa_comps.login') }}" role="form" class="form-container" >
+            {{ form.csrf_token }}
+            <p>{{ form.username.label }}:</p>
+            <div class="input-data">
+                 {{ form.username() }}
+            </div>
+
+            <p>{{ form.password.label }}:</p>
+            <div class="input-data">
+                 {{ form.password()}}
+            </div>
+
+
+
+            <div>
+                <button type="submit" class="button-form" >Login</button>
+            </div>
+
+        </form>
+
+
+
+
         {% endblock %}

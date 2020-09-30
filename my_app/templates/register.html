@@ -8,29 +8,34 @@
 
 <div class="log-message">
     <h3>Register page.</h3>
+    {% for category in get_flashed_messages (with_categories=false) %}
+        {{ category }}
+    {% endfor %}
 </div>
 
-<div class="form">
-    <p>email</p>
-    {{ render_input('text',25,10) }}
-</div>
+<form method="POST" action="{{ url_for('uefa_comps.register') }}" role="form" class="form-container" >
+ {{ form.csrf_token }}
+    <p>{{ form.username.label }}:</p>
+    <div class="input-data">
+         {{ form.username() }}
+    </div>
 
-<div class="form">
-    <p>username</p>
-    {{ render_input('text',10,10) }}
-</div>
+    <p>{{ form.password.label }}:</p>
+    <div class="input-data">
+         {{ form.password()}}
+    </div>
 
-<div class="form">
-    <p>password</p>
-    {{ render_input('password',10,10) }}
-</div>
+    <p>{{ form.confirm.label }}:</p>
+    <div class="input-data">
+         {{ form.confirm()}}
+    </div>
 
-<div class="form">
-    <p>password</p>
-    {{ render_input('password',10,10) }}
-</div>
+    <div>
+        <button type="submit" class="button-form" >Login</button>
+    </div>
 
-<div class="button-form">
-    <a href="register.html">Register</a>
-</div>
+
+</form>
+
+
 {% endblock %}

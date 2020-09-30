@@ -22,7 +22,7 @@
     {% if video == "" %}
     <a href="{{ url_for(endpoint, podforum=set_url(podforum,id), page=page) }}"> {{ text|safe }} </a>
     {% else %}
-    <a href="{{ url_for(endpoint, podforum=set_url(video.podforum), video=set_url(video.naslov,video.id) , page=page) }}"> {{ text|safe }} </a>
+    <a href="{{ url_for(endpoint, video=video.url_view , page=page) }}"> {{ text|safe }} </a>
     {% endif %}
 {%- endmacro %}
 

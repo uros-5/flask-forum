@@ -6,15 +6,16 @@
 </head>
 <body>
 
-{% if not komentari.has_prev %}
-    <p>Slika</p>
-{% endif %}
+<form method="POST" action="{{ url_for('uefa_comps.testing') }}" role="form" class="form-container" enctype="multipart/form-data">
+    {{ text }}
 
-{% for komentar in komentari.items %}
-<div style="border:2px solid black;">
-    <p>{{ komentar["komentar"] }}</p>
-</div>
-{% endfor %}
+    <div>
+        <button type="submit" class="button-form" >POST</button>
+    </div>
+
+</form>
+
+
 
 
 

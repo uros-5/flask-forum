@@ -76,11 +76,7 @@ body * + * {
 }
 
 .form {
-    grid-column: 1 / 3;
-    display: flex;
-    justify-content: center;
-    align-items: baseline;
-    margin-top:0;
+    flex: 1 100%;
     /*background-color: #8fa8aa;*/
 }
 
@@ -98,9 +94,10 @@ body * + * {
 }
 
 .button-form {
-    grid-column: 1 / 3;
-    display: flex;
-    justify-content: center;
+	cursor: pointer;
+	font-size: 0.9em;
+	background-color: white;
+	margin-bottom: 0.5em;
 }
 
 .button-form a {
@@ -147,4 +144,32 @@ body * + * {
 
 .pagination_page a{
     color: white;
+}
+
+.form-container {
+    grid-column: 1 / 3;
+    display:flex;
+    flex-wrap:wrap;
+    align-items: baseline;
+    justify-content: center;
+    margin-top:0;
+    flex-direction:row;
+}
+
+.form-container p {
+    flex: 1 50%;
+
+
+    text-align:right;
+}
+
+.form-container .input-data {
+    flex: 1 50%;
+    /*margin-left:0.5em;*/
+    text-align: left;
+}
+
+.input-data input {
+    margin-left: 0.5em;
+    font-size: 0.9em;
 }

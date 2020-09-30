@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from '__helpers.html' import href_forum with context %}
+{% from '__helpers.html' import href_forum,render_input with context %}
 {% block headcss %}
 {{ super() }} {{ render_link_rel('video') }}
 {% endblock %}
@@ -69,5 +69,15 @@
 
         </div>
     {% endfor %}
+
+     <div class="topic-user-post">
+         <textarea rows="4" cols="50">
+         </textarea>
+         <div class="comment-btn">
+             <a href="//">Comment</a>
+
+         </div>
+     </div>
+
 
 {% endblock %}
