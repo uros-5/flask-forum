@@ -4,6 +4,8 @@ from flask_sqlalchemy import SQLAlchemy
 import os
 from flask_migrate import Migrate, MigrateCommand
 from flask_login import LoginManager
+from flask_admin import Admin
+from flask_admin.contrib.sqla import ModelView
 
 def create_app():
 	app = Flask(__name__)
@@ -27,7 +29,17 @@ login_manager.login_view = "uefa_comps.login"
 
 
 from my_app.uefa_comps.views import uefa_comps
+from my_app.uefa_comps.views import current_user
+from my_app.uefa_comps.views import Users,Videos
 app.register_blueprint(uefa_comps)
 db.create_all()
 
+from my_app.uefa_comps.AdminView import *
+admin = Admin(app,index_view=MyAdminIndexView(current_user))
 
+
+# admin.add_view(HelloView(name="Hello"))
+# admin.add_view(ModelView(views.Users,db.session))
+
+admin.add_view(UserAdminView(Users, db.session,current_user))
+admin.add_view(VideosAdminView(Videos,db.session,current_user))

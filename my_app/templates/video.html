@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from '__helpers.html' import href_forum,render_input with context %}
+{% from '__helpers.html' import href_forum,render_input,set_date with context %}
 {% block headcss %}
 {{ super() }} {{ render_link_rel('video') }}
 {% endblock %}
@@ -26,12 +26,12 @@
         {% if not komentari.has_prev %}
         <div class="topic-main-post">
             <div class="topic-main-op">
-                <a href="//">{{ video.objavio }}</a>
+                <a href="//">{{ video.korisnici.username }}</a>
             </div>
 
 
             <div class="topic-main-date">
-                <p href="//">#0 {{ video.objavljeno }}</p>
+                <p href="//">#0 {{ set_date(video.objavljeno) }}</p>
             </div>
 
 
@@ -51,13 +51,14 @@
     {% endif %}
 
     {% for komentar in komentari.items %}
+
         <div class="topic-comment-post">
             <div class="topic-commentator">
-                <a href="//">{{ komentar.napisao }}</a>
+                <a href="//">{{ komentar.korisnici.username }}</a>
             </div>
 
             <div class="topic-comment-date">
-                <p>#{{ komentar.id }} {{ komentar.napisano }}</p>
+                <p>#{{ komentar.id }} {{ set_date(komentar.napisano) }}</p>
             </div>
 
             <div class="topic-comment">
@@ -70,14 +71,11 @@
         </div>
     {% endfor %}
 
-     <div class="topic-user-post">
-         <textarea rows="4" cols="50">
-         </textarea>
+     <form method="POST" action="{{ url_for('uefa_comps.add_comment',video=video.url_view,page=1) }}" role="form"  class="topic-user-post">
+         {{ form.komentar(rows=5,column=50) }}
          <div class="comment-btn">
-             <a href="//">Comment</a>
+             <button type="submit" >Comment</button>
 
          </div>
-     </div>
-
-
+     </form>
 {% endblock %}

@@ -136,9 +136,10 @@
     flex: 1 24%;
 }
 
-.comment-btn a {
+.comment-btn button {
 	background-color: #ba9e9e80;
 	padding: 0.5em;
 	border-radius: 0.2em;
 	text-decoration: none;
+    cursor:pointer;
 }

@@ -10,7 +10,7 @@ class Users(db.Model):
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 	username = db.Column(db.String(10), nullable=False, unique=True)
 	password = db.Column(db.String(), nullable=False)
-	datum_registracije = db.Column(db.Date(), nullable=False, default=datetime.datetime.utcnow)
+	datum_registracije = db.Column(db.DateTime(), nullable=False, default=datetime.datetime.utcnow())
 	uploader = db.Column(db.Boolean(), default=False)
 
 	def __init__(self, username, password, uploader=False):
@@ -39,17 +39,22 @@ class Users(db.Model):
 	def __repr__(self):
 		return self.id
 
+	def is_uploader(self):
+		return self.uploader
+
 
 class Videos(db.Model):
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 	naslov = db.Column(db.String(10), nullable=False)
 	podforum = db.Column(db.String(30), nullable=False)
-	objavljeno = db.Column(db.Date(), nullable=False, default=datetime.datetime.utcnow)
+	objavljeno = db.Column(db.DateTime(), nullable=False, default=lambda : datetime.datetime.utcnow())
 	slika = db.Column(db.String(255), nullable=False)
 	dl_link = db.Column(db.String(80), nullable=False)
 	objavio = db.Column(db.Integer(), db.ForeignKey("users.id"))
 	url_view = db.Column(db.String(60), nullable=False,unique=True,default=lambda nbytes=16: secrets.token_hex(nbytes))
-
+	korisnici = db.relationship(
+		'Users', backref=db.backref('objavio', lazy='dynamic')
+	)
 	def __init__(self,naslov,podforum,dl_link,objavio=1):
 		self.naslov = naslov
 		self.podforum = podforum
@@ -58,15 +63,18 @@ class Videos(db.Model):
 		self.slika = ""
 
 	def __repr__(self):
-		return self.id
+		return str(self.id)
 
 
 class KomentariNaVideu(db.Model):
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 	komentar = db.Column(db.Text(400), nullable=False)
-	napisano = db.Column(db.Date(), nullable=False, default=datetime.datetime.utcnow)
+	napisano = db.Column(db.DateTime(), nullable=False, default=datetime.datetime.utcnow)
 	video = db.Column(db.Integer(), db.ForeignKey("videos.id"))
 	napisao = db.Column(db.Integer(), db.ForeignKey("users.id"))
+	korisnici = db.relationship(
+		'Users', backref=db.backref('napisao', lazy='dynamic')
+	)
 
 	def __repr__(self):
 		return self.id

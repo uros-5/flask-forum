@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
-{% from '__helpers.html' import render_input %}
+{% from '__helpers.html' import render_input,render_link_rel %}
 {% block headcss %}
+    {{ render_link_rel('forms') }}
 {{ super() }}
+
 {% endblock %}
 
         {% block content %}
