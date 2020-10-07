@@ -42,10 +42,13 @@ class Users(db.Model):
 	def is_uploader(self):
 		return self.uploader
 
+	def __str__(self):
+		return str(self.id)
+
 
 class Videos(db.Model):
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-	naslov = db.Column(db.String(10), nullable=False)
+	naslov = db.Column(db.String(80), nullable=False)
 	podforum = db.Column(db.String(30), nullable=False)
 	objavljeno = db.Column(db.DateTime(), nullable=False, default=lambda : datetime.datetime.utcnow())
 	slika = db.Column(db.String(255), nullable=False)
@@ -63,6 +66,9 @@ class Videos(db.Model):
 		self.slika = ""
 
 	def __repr__(self):
+		return str(self.id)
+
+	def __str__(self):
 		return str(self.id)
 
 

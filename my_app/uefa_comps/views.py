@@ -29,7 +29,6 @@ def admin_login_required(func):
 	return decorated_view
 
 
-
 # POCETNA
 @uefa_comps.route("/")
 @uefa_comps.route("/home/")
@@ -89,7 +88,7 @@ def register():
 @uefa_comps.route("/<podforum>/<int:page>")
 @login_required
 def forum(podforum,page):
-	videos = Videos.query.filter(Videos.podforum == podforum_name(podforum)).paginate(page, 5)
+	videos = Videos.query.filter(Videos.podforum == podforum_name(podforum)).order_by(Videos.id.desc()).paginate(page, 5)
 	return render_template("podforum.html", videos= videos, podforum = podforum_name(podforum))
 
 # VIDEO
@@ -120,16 +119,8 @@ def add_comment(video):
 		page = get_pages(4,1,video_obj)
 		return redirect(url_for("uefa_comps.video", video=video_obj.url_view, page=page))
 
-# ADDING VIDEO
-@uefa_comps.route("/add_video/",methods=["GET","POST"])
-@login_required
-def add_video():
-	form = AddVideosForm(meta={'csrf': False})
-	if request.method == "POST" and form.validate():
-		form.add_video(db,app,allowed_file)
-		return redirect("uefa_comps.pocetna")
-	return render_template("test.html",text="Uspesno je!",form=form)
 
+# ADMIN URLS
 @uefa_comps.route("/admin")
 @login_required
 @admin_login_required
@@ -143,6 +134,17 @@ def user_list_admin():
 	users = Users.query.all()
 	return render_template("users-list-admin.html",users = users)
 
+class VideosAdd(BaseView):
+	@expose("/")
+	def adding_videos(self):
+		form = AddVideosForm(meta={'csrf': False})
+		if request.method == "POST" and form.validate():
+			form.add_video(db, app, allowed_file)
+			return redirect("uefa_comps.pocetna")
+		return render_template("test.html", text="Uspesno je!", form=form)
+
+	def is_accessible(self):
+		return current_user.is_authenticated and current_user.is_uploader()
 
 
 

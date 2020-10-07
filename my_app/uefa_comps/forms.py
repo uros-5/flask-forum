@@ -4,7 +4,7 @@ from wtforms.validators import InputRequired,ValidationError,EqualTo
 from flask_wtf.file import FileField, FileRequired
 from my_app.uefa_comps.models import Users,Videos
 import os
-from werkzeug.utils import secure_filename
+
 
 class RegistationForm(FlaskForm):
 	username = StringField("username",[InputRequired()])
@@ -44,11 +44,7 @@ class AddVideosForm(FlaskForm):
 	dl_link = StringField("dl_link", validators=[InputRequired()])
 
 	def add_video(self,db,app,allowed_file):
-		if allowed_file(self.slika.filename):
-			filename = secure_filename(self.slika.filename)
-			self.slika.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
-		video = Videos(self.naslov.data, self.podforum.data, self.dl_link.data, 1)
-		video.slika = filename
+
 		db.session.add(video)
 		db.session.commit()
 
