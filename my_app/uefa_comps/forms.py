@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField,SelectField,FileField,TextAreaField,BooleanField
 from wtforms.validators import InputRequired,ValidationError,EqualTo
 from flask_wtf.file import FileField, FileRequired
-from my_app.uefa_comps.models import Users,Videos
+from my_app.uefa_comps.models import Users,Videos,KomentariNaVideu
 import os
 
 
@@ -34,20 +34,6 @@ class LoginForm(FlaskForm):
 		login_user(existing_user,remember=True)
 		return True
 
-
-
-class AddVideosForm(FlaskForm):
-	naslov = StringField("naslov", validators=[InputRequired()])
-	podforum = SelectField("podforum", validators=[InputRequired()],
-						   coerce=int,choices=[(1,"Champions League"),(2,"Europe League"),(3,"EURO")])
-	slika = FileField("slika", validators=[FileRequired()])
-	dl_link = StringField("dl_link", validators=[InputRequired()])
-
-	def add_video(self,db,app,allowed_file):
-
-		db.session.add(video)
-		db.session.commit()
-
 class AdminUserCreateForm(FlaskForm):
 	username = StringField("username",[InputRequired()])
 	password = StringField("password",[InputRequired()])
@@ -59,3 +45,14 @@ class AdminUserUpdateForm(FlaskForm):
 
 class VideosForm(FlaskForm):
 	komentar = TextAreaField("komentar",validators=[InputRequired()])
+
+	def post_comment(self,request,video,korisnik,db,get_pages):
+		kom_obj = KomentariNaVideu()
+		video_obj = Videos.query.filter(Videos.url_view == video).first()
+		kom_obj.komentar = request.form.get("komentar")
+		kom_obj.napisao = korisnik
+		kom_obj.video = video_obj.id
+		db.session.add(kom_obj)
+		db.session.commit()
+		page = get_pages(4, 1, video_obj)
+		return {"video":video_obj.url_view,"page":page}

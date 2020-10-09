@@ -6,8 +6,7 @@ from my_app import db,ALLOWED_EXTENSIONS,os,app
 from flask_login import current_user,login_user,logout_user,login_required
 from functools import wraps
 from flask import abort
-from flask_admin import BaseView,expose,AdminIndexView
-
+import random,pyperclip
 
 uefa_comps = Blueprint("uefa_comps", __name__)
 
@@ -18,7 +17,6 @@ def load_user(id):
 @uefa_comps.before_request
 def get_current_user():
 	g.user = current_user
-
 
 def admin_login_required(func):
 	@wraps(func)
@@ -108,45 +106,10 @@ def video(video,page):
 @uefa_comps.route("/add_comment/<video>",methods=["POST"])
 @login_required
 def add_comment(video):
+	form = VideosForm()
 	if (request.method == "POST"):
-		kom_obj = KomentariNaVideu()
-		video_obj = Videos.query.filter(Videos.url_view == video).first()
-		kom_obj.komentar = request.form.get("komentar")
-		kom_obj.napisao = current_user.id
-		kom_obj.video = video_obj.id
-		db.session.add(kom_obj)
-		db.session.commit()
-		page = get_pages(4,1,video_obj)
-		return redirect(url_for("uefa_comps.video", video=video_obj.url_view, page=page))
-
-
-# ADMIN URLS
-@uefa_comps.route("/admin")
-@login_required
-@admin_login_required
-def home_admin():
-	return render_template("admin-home.html")
-
-@uefa_comps.route("/admin/user-list")
-@login_required
-@admin_login_required
-def user_list_admin():
-	users = Users.query.all()
-	return render_template("users-list-admin.html",users = users)
-
-class VideosAdd(BaseView):
-	@expose("/")
-	def adding_videos(self):
-		form = AddVideosForm(meta={'csrf': False})
-		if request.method == "POST" and form.validate():
-			form.add_video(db, app, allowed_file)
-			return redirect("uefa_comps.pocetna")
-		return render_template("test.html", text="Uspesno je!", form=form)
-
-	def is_accessible(self):
-		return current_user.is_authenticated and current_user.is_uploader()
-
-
+		res = form.post_comment(request,video,current_user.id,db,get_pages)
+		return redirect(url_for("uefa_comps.video", video=res["video"], page=res["page"]))
 
 
 @uefa_comps.context_processor
@@ -168,8 +131,7 @@ def podforum_name(podforum):
 		return podforum
 	return podforum.upper()
 
-def allowed_file(filename):
-	return '.' in filename and filename.lower().rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
 
 def is_logged():
 	return session.get('username')
@@ -177,3 +139,4 @@ def is_logged():
 def get_pages(items,page,video_obj):
 	komentari = KomentariNaVideu.query.filter(KomentariNaVideu.video == video_obj.id).paginate(1, 4)
 	return komentari.pages
+

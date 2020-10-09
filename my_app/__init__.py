@@ -10,10 +10,12 @@ def create_app():
 	app = Flask(__name__)
 	db.init_app(app)
 	return app
+def allowed_file(filename):
+	return '.' in filename and filename.lower().rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 # BLUEPRINT ZA DRUGE MODULE
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///tmp/uefa_comps.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database/uefa_comps.db"
 app.secret_key = b'vsarTest/'
 
 # LOKACIJA UPLOAD FOLDERA
@@ -31,7 +33,7 @@ login_manager.login_view = "uefa_comps.login"
 
 
 # CIRCULAR IMPORT.. UVOZ views
-from my_app.uefa_comps.views import uefa_comps,current_user,Users,Videos,KomentariNaVideu,allowed_file
+from my_app.uefa_comps.views import uefa_comps,current_user,Users,Videos,KomentariNaVideu,request
 app.register_blueprint(uefa_comps)
 db.create_all()
 
@@ -41,5 +43,5 @@ admin = Admin(app,index_view=MyAdminIndexView(current_user))
 
 admin.add_view(UserAdminView(Users, db.session,current_user))
 videos_admin_view = VideosAdminView(Videos,db.session,current_user)
-videos_admin_view.set_flask_tools(allowed_file,app.config['UPLOAD_FOLDER'])
+videos_admin_view.set_flask_tools(allowed_file,app.config['UPLOAD_FOLDER'],request)
 admin.add_view(videos_admin_view)
