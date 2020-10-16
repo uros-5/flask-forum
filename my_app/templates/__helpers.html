@@ -1,20 +1,19 @@
-{% macro render_input(type='text', maxlength='10' , size='10' ,name='', class='', value='' ) %}
-<input type="{{ type }}" name="{{ name }}" class="{{ class }}"
-       value="{{ value }}" maxlength="{{ max_length}}" size="{{ size }}"/>
-{%- endmacro %}
-
+{# za stylesheet,samo navesti naziv fajla ili putanju bez css #}
 {% macro render_link_rel (naziv='') %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/%s.css' % naziv) }}" type="text/css"/>
 {%- endmacro %}
 
+{# za javascript #}
 {% macro render_script_href(naziv='') %}
 <script src="{{ url_for('static' , filename='js/%s.js' % naziv) }}"></script>
 {% endmacro %}
 
+{# za linkove koji vode ka podforumu, set_url funkcija sluzi da zameni whitespace sa _ #}
 {% macro href_home(podforum) %}
     <a href="{{ url_for('uefa_comps.forum', podforum=set_url(podforum) , page=1) }}"> {{ podforum }} </a>
 {%- endmacro %}
 
+{# za linkove ka drugim stranicama nekog podforuma #}
 {% macro href_forum(endpoint="",podforum="",page=1,text="",id="",video="") %}
 
     {% if text == "<" %}
@@ -30,6 +29,8 @@
     {% endif %}
 {%- endmacro %}
 
+{# za vreme objavljivanja komentara ili objave bez milisekundi #}
 {% macro set_date(datetime) %}
 {{ datetime.strftime("%Y-%m-%d %H:%M:%S") }}
 {% endmacro %}
+

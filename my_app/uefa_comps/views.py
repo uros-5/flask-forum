@@ -7,6 +7,7 @@ from flask_login import current_user,login_user,logout_user,login_required
 from functools import wraps
 from flask import abort
 import random,pyperclip
+import datetime
 
 uefa_comps = Blueprint("uefa_comps", __name__)
 
@@ -70,7 +71,6 @@ def register():
 	form = RegistationForm()
 
 	if form.validate_on_submit():
-
 		if not form.check_form(db):
 			flash("Ovaj username vec posotoji.","warning")
 			return render_template("register.html",form = form)
@@ -98,7 +98,6 @@ def video(video,page):
 	if(video_obj!=None):
 		user = Users.query.get(video_obj.objavio)
 		komentari = KomentariNaVideu.query.filter(KomentariNaVideu.video == video_obj.id).paginate(page, 4)
-
 		return render_template("video.html", form = form,video=video_obj, user=user,komentari = komentari)
 	return render_template("base.html")
 
@@ -119,8 +118,27 @@ def utility_processor():
 		if(id!=""):
 			return video + "_"+str(id)
 		return video
-	return dict(set_url=set_url)
 
+	def message_posted(podforum):
+		sekunde = Videos.get_time_for_index(podforum)
+		if(sekunde<60):
+			return "nedavno"
+		elif(sekunde>60 and sekunde<3600):
+			return "pre {} min".format(int(sekunde/60))
+
+		elif (sekunde > 3600 and sekunde <86400):
+			return "pre {} sati".format(int(sekunde / 3600))
+
+		elif (sekunde > 86400 and sekunde <2592000):
+			return "pre {} dana".format(int(sekunde / 86400))
+
+		elif (sekunde > 2592000 and sekunde <31104000):
+			return "pre {} meseci".format(int(sekunde / 2592000))
+
+		elif (sekunde > 31104000):
+			return "pre {} godine".format(int(sekunde / 60))
+
+	return dict(set_url=set_url,message_posted=message_posted)
 
 # OTHER FUNCTIONS
 def podforum_name(podforum):
@@ -139,4 +157,3 @@ def is_logged():
 def get_pages(items,page,video_obj):
 	komentari = KomentariNaVideu.query.filter(KomentariNaVideu.video == video_obj.id).paginate(1, 4)
 	return komentari.pages
-

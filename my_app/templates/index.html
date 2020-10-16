@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% from '__helpers.html' import href_home with context %}
-
 {% block headcss %}
 {{ super() }}
 {{ render_link_rel('index') }}
@@ -13,7 +12,7 @@
     {% for podforum in forum %}
     <div class="main-category">
         {{ href_home(podforum.0) }}
-        <p>last message:10min</p>
+        <p>last message:{{ message_posted(podforum.0) }}</p>
     </div>
     <div class="main-category-photo">
         <img src=""/>

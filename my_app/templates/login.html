@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from '__helpers.html' import render_input,render_link_rel %}
+{% from '__helpers.html' import render_link_rel %}
 {% block headcss %}
     {{ render_link_rel('forms') }}
 {{ super() }}
@@ -26,15 +26,9 @@
                  {{ form.password()}}
             </div>
 
-
-
             <div>
                 <button type="submit" class="button-form" >Login</button>
             </div>
-
         </form>
-
-
-
 
         {% endblock %}

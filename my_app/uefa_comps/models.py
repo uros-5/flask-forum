@@ -71,6 +71,11 @@ class Videos(db.Model):
 	def __str__(self):
 		return str(self.id)
 
+	def get_time_for_index(podforum):
+		obj = Videos.query.filter(Videos.podforum==podforum).order_by(Videos.id.desc()).first()
+		vreme = (datetime.datetime.utcnow() - obj.objavljeno).total_seconds()
+		return vreme
+
 
 class KomentariNaVideu(db.Model):
 	id = db.Column(db.Integer, primary_key=True, autoincrement=True)
